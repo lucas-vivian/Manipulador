@@ -65,14 +65,14 @@ def read_msg(Obj_porta):  # recebe a mensagem da serial e, através do protocolo
     check = 'B'
     end = 'B'
     byte = Obj_porta.read()
-    # print "Antes:", byte.encode('hex')
+    #print "Antes:", byte.encode('hex')
     if byte == '\xe7':  # start byte
-        # print "Depois:", byte.encode('hex')
-        # print Obj_porta.inWaiting()
+        #print "Depois:", byte.encode('hex')
+        #print Obj_porta.inWaiting()
         msg_raw = Obj_porta.read(50)  # começa a partir do byte seguinte ao byte start
-        # print "Depois:", byte.encode('hex')
-        # print("\n")
-        # print " ".join(c.encode('hex') for c in msg_raw)
+        #print "Depois:", byte.encode('hex')
+        #print("\n")
+        #print " ".join(c.encode('hex') for c in msg_raw)
         if msg_raw[49] != '\xe5':  # byte final inválido
             return None
         chksum = 0xe7
@@ -81,15 +81,15 @@ def read_msg(Obj_porta):  # recebe a mensagem da serial e, através do protocolo
         chksum = chksum % 256
         # print 'cheksum: ', chksum, '=', ord(msg_raw[48])
         if chksum != ord(msg_raw[48]):
-            # print("Pacote corrompido")
+            #print("Pacote corrompido")
             return None
         else:
-            # print("Pacote OK")
+            #print("Pacote OK")
             msg = list(struct.unpack(align + master_values + 5 * motor + check + end, msg_raw))
             msg.insert(0, 0xe7)
             # print " ".join('{:02x}'.format(x) for x in msg)
             # print "e7", " ".join(c.encode('hex') for c in msg_raw)
-            # print msg
+            #print msg
             return msg
 
 
@@ -189,7 +189,7 @@ def send_msg(msg_final, Obj_porta):
 
 def send_target_pos(Obj_porta, target_pos):
     # Send desired joint positions for manipulator
-    # print "Send target joint position: "
+    #print "Send target joint position: "
     new_msg = create_msg()
 
     for motor_num in range(3):
@@ -199,7 +199,7 @@ def send_target_pos(Obj_porta, target_pos):
         msb = (pos >> 8) & 0xFF
         new_msg[motor_change + 1] = msb
         new_msg[motor_change + 2] = lsb
-        # print motor_num + 1, pos
+        #print motor_num + 1, pos
 
     final_msg = checksum(new_msg)
 
@@ -208,44 +208,42 @@ def send_target_pos(Obj_porta, target_pos):
 
 def get_actual_pos(msg):
     # Get actual joint angle positions from received message
-    pos = [0, 0, 0]
+	pos = [0, 0, 0]
 
-    # print "Read actual joint position: "
+	#print "Read actual joint position: "
 
-    for motor_num in range(3):
-        pos[motor_num] = msg[motor_num * 6 + 5]
-    # print motor_num + 1, pos[motor_num]
+	for motor_num in range(3):
+		pos[motor_num] = msg[motor_num * 6 + 5]
+		#print motor_num + 1, pos[motor_num]
 
-    return pos
-
+	return pos
 
 def get_actual_speed(msg):
     # Get actual joint speed from received message
-    spd = [0, 0, 0]
+    spd = [0,0,0]
     for motor_num in range(3):
         spd[motor_num] = msg[motor_num * 6 + 6]
-    # print "Joints' speed: ", spd
+    #print "Joints' speed: ", spd
     return spd
-
 
 def get_ee_pos_from_file():
     # Get target end-effector position or trajectory from file
     file = open('ponto.txt', 'r')
-
+    
     ee_pos = []
     data = file.readline()
-
-    # Resolver problema da linha extra no final do arquivo!!!
+    
+	# Resolver problema da linha extra no final do arquivo!!!
     while data:
-        data = data.strip()
-        new_data = data.split(',')
-        ee_pos.append(map(float, new_data))
-        data = file.readline()
-
+		data = data.strip()
+		new_data = data.split(',')
+		ee_pos.append(map(float, new_data))
+		data = file.readline()
+    
     file.close()
-
-    # print ee_pos, len(ee_pos)
-
+ 
+    #print ee_pos, len(ee_pos)
+    
     return ee_pos
 
 
@@ -281,23 +279,21 @@ def ik_solver(ee_pos):
     res = least_squares(arm_eq, (0.1, 0.1, 0.1), bounds=(lb, ub), args=(x, y, z))
 
     # Check if the optimization was successfull
-    opt_result_pos = arm_eq(res.x, 0, 0,
-                            0)  # returns theoretical end effector position from provided optimization result angles
-
-    dist = sqrt((ee_pos[0] - opt_result_pos[0]) ** 2 + (ee_pos[1] - opt_result_pos[1]) ** 2 + (
-                ee_pos[2] - opt_result_pos[2]) ** 2)  # calculates distance
-
-    # print "Computado: ", opt_result_pos
-    # print "Desejado: ", ee_pos
-    # print dist
-
+    opt_result_pos = arm_eq(res.x, 0, 0, 0)  # returns theoretical end effector position from provided optimization result angles
+    
+    dist = sqrt((ee_pos[0] - opt_result_pos[0]) ** 2 + (ee_pos[1] - opt_result_pos[1]) ** 2 + (ee_pos[2] - opt_result_pos[2]) ** 2) # calculates distance
+    
+    #print "Computado: ", opt_result_pos
+    #print "Desejado: ", ee_pos
+    #print dist
+    
     tolerance = 10  # tolerance distance of 1 cm
     if dist > tolerance or res.success is not True:
         print "Error! Coordinate outside manipulator's workspace!"
         exit()
-
-    # print "IK solution (rad):", res.x[1], res.x[0], res.x[2]
-    # print "IK solution (deg):", degrees(res.x[1]), degrees(res.x[0]), degrees(res.x[2])
+        
+    #print "IK solution (rad):", res.x[1], res.x[0], res.x[2]
+    #print "IK solution (deg):", degrees(res.x[1]), degrees(res.x[0]), degrees(res.x[2])
 
     return res
 
@@ -313,27 +309,24 @@ def convert_rad_to_ad(pos_rad):
 
 
 # NOT USED!!
-def verify_opt(opt_result, ee_pos):  # Receives optimization result and original position from file
-    opt_result_pos = arm_eq(opt_result.x, 0, 0,
-                            0)  # returns theoretical end effector position from provided optimization result angles
+def verify_opt(opt_result, ee_pos): #Receives optimization result and original position from file
+    opt_result_pos = arm_eq(opt_result.x, 0, 0, 0)  # returns theoretical end effector position from provided optimization result angles
     print "Optimization result position", opt_result_pos
-    dist = sqrt((ee_pos[0] - opt_result_pos[0]) ** 2 + (ee_pos[1] - opt_result_pos[1]) ** 2 + (
-                ee_pos[2] - opt_result_pos[2]) ** 2)  # calculates distance
+    dist = sqrt((ee_pos[0] - opt_result_pos[0]) ** 2 + (ee_pos[1] - opt_result_pos[1]) ** 2 + (ee_pos[2] - opt_result_pos[2]) ** 2)  # calculates distance
     # between desired EE position and optimization found position
     tolerance = 10  # tolerance distance of 1 cm
     if dist > tolerance or opt_result.success is not True:
         print "Error! Coordinate outside manipulator's workspace!"
         exit()
 
-
 def evaluate_speed(spd):
-    tolerance = 1  # defines 10 rpm of tolerance
+    tolerance = 1 # defines 10 rpm of tolerance
     joints = 0
-    # print "Joint Speeds: ", spd
+    #print "Joint Speeds: ", spd
     for i in range(3):
-        if spd[i] < tolerance:  # evaluate if speed of each joint is less than tolerance
+        if spd[i] < tolerance: # evaluate if speed of each joint is less than tolerance
             joints += 1
-            if joints == 3:  # all joints stopped
+            if joints == 3: # all joints stopped
                 print "Manipulator arrived at current point"
                 return True
 
@@ -344,7 +337,7 @@ def main():
 
     # Send the robot to initial position
     target_pos = [0, 0, 0]  # unidade: AD
-    send_target_pos(Obj_porta, target_pos)  # enviar posição desejada
+    send_target_pos(Obj_porta, target_pos) # enviar posição desejada
     received_msg = read_msg(Obj_porta)
     if received_msg is not None:
         pos_before = get_actual_pos(received_msg)
@@ -352,22 +345,23 @@ def main():
     # Get target end-effector position (x, y, z) or trajectory matrix from file
     ee_pos = get_ee_pos_from_file()
     num_points = len(ee_pos)
-    # print "\nTrajectory: ", ee_pos, "\n"
+    #print "\nTrajectory: ", ee_pos, "\n"
 
     # Check if Trajectory is empty!! --> MISSING
 
-    # Start at first point of trajectory
+    print "Start at first point of trajectory"
     pt = 0
     point_reached = False
     moving = False
     count = 0
-
-    while (1):
-        # print "Point: ", pt
+    
+    while (1):        
+        #print "Point: ", pt
 
         # Compute joint angles from target EE pos (using IK)
-        # print "Trajectory Point: ", ee_pos[pt]
-        # print "Matrix Index: ", pt
+        #print "Trajectory Point: ", ee_pos[pt]
+        #print "Matrix Index: ", pt
+        
         opt_result = ik_solver(ee_pos[pt])
 
         # Retrieve only angle values from the optimization result
@@ -375,11 +369,11 @@ def main():
 
         # Convert target joint angles from degrees to "pulses"
         target_pos = convert_rad_to_ad(target_pos_rad)
-        # print  "Target joint position (ad):", target_pos
+        #print  "Target joint position (ad):", target_pos
 
         # Send target position (joint angles)
         target_pos = [0, 0, 0]
-        # target_pos = [6773, 5080, 4204]  # unidade: AD
+        #target_pos = [6773, 5080, 4204]  # unidade: AD
         send_target_pos(Obj_porta, target_pos)
 
         # Read data from manipulator
@@ -394,15 +388,15 @@ def main():
                     moving = True
 
         count += 1;
-
+        
         # If it is moving, check the speed
         if moving == True:
             spd = get_actual_speed(received_msg)
-            # print pos_before, pos_now, spd
+            #print pos_before, pos_now, spd
 
-            if (spd[0] == 0) and (spd[1] == 0) and (spd[2] == 0):  # ver um jeito melhor de fazer isso...
+            if (spd[0] == 0) and (spd[1] == 0) and (spd[2] == 0):   # ver um jeito melhor de fazer isso...
                 point_reached = True
-                moving = False
+                moving = False	
 
                 print "Point reached: ", point_reached
                 print "Trajectory Point: ", ee_pos[pt]
@@ -412,18 +406,18 @@ def main():
                 print "Count: ", count
                 print "\n"
                 count = 0
-
+                
         # If the point was reached, move on to the next point, until the trajectory is completed
         if point_reached == True:
-            if pt == num_points - 1:
+            if pt == num_points-1:
                 print "Trajectory Completed!"
                 exit()
-            elif pt < num_points - 1:
-                pt += 1  # go to next point
+            elif pt < num_points-1:
+                pt += 1		# go to next point
                 point_reached = False
                 pos_before = pos_now
-
-    # print "\n"
+                
+       # print "\n"
 
 
 if __name__ == '__main__':
