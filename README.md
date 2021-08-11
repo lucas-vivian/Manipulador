@@ -20,6 +20,8 @@ The forward kinematics problem is defined by: ".. determine the position n and o
 
 Having determined the DH parameters and the offset of the manipulator, the links are created and the joint limits defined. Using the _teach_ function from Peter Corke toolbox we create an interactive enviroment to solve the forward kinematics problem of the manipulator.
 
+When the program is executed, a new window will appear allowing the user to set angles for each joint showing the three coordinates of the end-effector as result.
+
 #### Generating workspace with `Workspace_TCC.m`
 
 #### Combining interface with workspace in `FK_Workspace.m`
