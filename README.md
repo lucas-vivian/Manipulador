@@ -6,10 +6,17 @@ It's composed by three folders:
 
 - Matlab: Theoretical simulations of the manipulator's kinematic model;
 - Python: Trajectory control and data send/receive algorithms to/from the manipulator;
-- Trajectory Points: Set of points og three different trajectories to be coursed by the manipulator.
+- Trajectory Points: Set of points of three different trajectories to be coursed by the manipulator.
 
 ## Matlab
-Algoritmos de Simula
+
+This folder is divided in Forward and Inverse Kinematics. The former contains three main simulation files: **FK_TCC**, **FK_Workspace** and **Workspace_TCC** and other two support files. The later
+
+### Forward Kinematics (FK)
+
+#### Generating worksapce with 'FK_Workspace.m'
+
+### Inverse Kinematics (IK)
 
 ## Python
  
