@@ -6,7 +6,7 @@ It's composed by three folders:
 
 - Matlab: Theoretical simulations of the manipulator's kinematic model;
 - Python: Trajectory control and data send/receive algorithms to/from the manipulator;
-- Trajectory Points: Set of points from three different trajectories to be coursed by the manipulator.
+- Trajectory Points: Set of points og three different trajectories to be coursed by the manipulator.
 
 ## Matlab
 Algoritmos de Simula
