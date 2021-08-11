@@ -14,13 +14,15 @@ This folder is divided in Forward and Inverse Kinematics. The former contains th
 
 ### Forward Kinematics (FK)
 
-The forward kinematics problem is defined by: ".. determine the positionn and orientation of the end effector in terms of joint variables". Using the Denavit-Hartenberg notation, the description of this problem in multiple DOF is simplified.
+The forward kinematics problem is defined by: ".. determine the position n and orientation of the end effector in terms of joint variables". Using the Denavit-Hartenberg notation, the description of this problem in multiple DOF is simplified.
 
-###Interactive FK interface with `FK_TCC.m`
+#### Interactive FK interface with `FK_TCC.m`
 
 Having determined the DH parameters and the offset of the manipulator, the links are created and the joint limits defined. Using the _teach_ function from Peter Corke toolbox we create an interactive enviroment to solve the forward kinematics problem of the manipulator.
 
-#### Generating workspace with `FK_Workspace.m`
+#### Generating workspace with `Workspace_TCC.m`
+
+#### Combining interface with workspace in `FK_Workspace.m`
 
 ### Inverse Kinematics (IK)
 
