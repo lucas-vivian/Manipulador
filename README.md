@@ -10,7 +10,7 @@ It's composed by three folders:
 
 ## Matlab
 
-This folder is divided in Forward and Inverse Kinematics. The former contains three main simulation files: **FK_TCC**, **FK_Workspace** and **Workspace_TCC** and other two support files. The later has only one main file **minsumsquare_test.m** and one support file.
+This folder is divided in Forward and Inverse Kinematics. The FK folder contains four main simulation files: **FK_TCC**, **FK_Workspace**, **Workspace_TCC** and **DH_Robot_literal**. There's a support file called **MGD_DH** for the last one. The IK folder has only one main file **minsumsquare_test.m** and one support file.
 
 ### Forward Kinematics (FK)
 
@@ -25,6 +25,8 @@ When the program is executed, a new window will appear allowing the user to set 
 #### 2. Generating workspace with `Workspace_TCC.m`
 
 #### 3. Combining interface with workspace in `FK_Workspace.m`
+
+#### 4. Generating Forward Kinematics equations in `DH_Robot_literal.m`
 
 ### Inverse Kinematics (IK)
 
