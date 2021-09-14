@@ -24,9 +24,9 @@ When the program is executed, a new window will appear allowing the user to set 
 
 #### 2. Generating workspace with `Workspace_TCC.m`
 
-The workspace of a manipulator is defined by all the points that the end-effector can reach without going over the manipulator's mechanical limits. Knowing the joint limits and using the **linspace** function, we create a aproximation of all joints' possible values to generate the workspace points through the forward kinematics equations.
+The workspace of a manipulator is defined by all the points that the end-effector can reach without going over the manipulator's mechanical limits. Knowing the joint limits and using the ***linspace*** function, we create a aproximation of all joints' possible values to generate the workspace points through the forward kinematics equations.
 
-Instead of using a **for** loop to apply each set of angles to each joint individually, we can use the *ndgrid* function to create a 50x50x50 matrix to each set to then use directly into the equations and then scatter the results.
+Instead of using a ***for*** loop to apply each set of angles to each joint individually, we can use the ***ndgrid*** function to create a 50x50x50 matrix to each set to then use directly into the equations and then scatter the results.
 
 #### 3. Combining interface with workspace in `FK_Workspace.m`
 
