@@ -34,6 +34,8 @@ Combining the two previous files we get a validation to the equations because it
 
 #### 4. Generating Forward Kinematics equations in `DH_Robot_literal.m`
 
+
+
 ### Inverse Kinematics (IK)
 
 ## Python
