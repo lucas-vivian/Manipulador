@@ -30,6 +30,8 @@ Instead of using a ***for*** loop to apply each set of angles to each joint indi
 
 #### 3. Combining interface with workspace in `FK_Workspace.m`
 
+Combining the two previous files we get a validation to the equations because it's possible to observe that when sliding the joints, they doesn't exceed workspace plot.
+
 #### 4. Generating Forward Kinematics equations in `DH_Robot_literal.m`
 
 ### Inverse Kinematics (IK)
