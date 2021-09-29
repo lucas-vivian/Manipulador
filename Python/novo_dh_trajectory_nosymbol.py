@@ -86,7 +86,7 @@ def prod_matrix(X, Y):
     return result
     
 
-def fowardk(theta1, theta2, theta3, theta4):
+def fowardk(theta1, theta2, theta3, theta4, theta5):
     #convert to radian
     #com offset inicial desconsiderado
     theta1 = radians(theta1) + (-pi/2)
