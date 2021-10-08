@@ -176,6 +176,8 @@ def demanda_motor(): #Depois do "metodo" das perguntas, utilizar o parser
             pos = (20200*ang)/120
         elif motor_num == 3:
             pos = (20320*ang)/145
+        elif motor_num == 4:
+            pos = (1770*ang)/360
         #print "posicao", pos
         lsb = pos & 0xFF
         #print "lsb", lsb
